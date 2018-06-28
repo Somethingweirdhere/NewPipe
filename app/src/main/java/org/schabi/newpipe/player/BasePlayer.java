@@ -1147,11 +1147,11 @@ public abstract class BasePlayer implements
 
     @Player.RepeatMode
     public int getRepeatMode() {
-        return simpleExoPlayer == null ? Player.REPEAT_MODE_OFF : simpleExoPlayer.getRepeatMode();
+        return simpleExoPlayer.getRepeatMode();
     }
 
     public void setRepeatMode(@Player.RepeatMode final int repeatMode) {
-        if (simpleExoPlayer != null) simpleExoPlayer.setRepeatMode(repeatMode);
+        simpleExoPlayer.setRepeatMode(repeatMode);
     }
 
     public float getPlaybackSpeed() {
