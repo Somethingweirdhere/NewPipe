@@ -71,14 +71,6 @@ public class PlaylistRemoteEntity implements PlaylistLocalItem {
                 info.getUploaderName(), info.getStreamCount());
     }
 
-    @Ignore
-    public boolean isIdenticalTo(final PlaylistInfo info) {
-        return getServiceId() == info.getServiceId() && getName().equals(info.getName()) &&
-                getStreamCount() == info.getStreamCount() && getUrl().equals(info.getUrl()) &&
-                getThumbnailUrl().equals(info.getThumbnailUrl()) &&
-                getUploader().equals(info.getUploaderName());
-    }
-
     public long getUid() {
         return uid;
     }
