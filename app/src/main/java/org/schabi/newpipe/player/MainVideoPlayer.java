@@ -213,7 +213,12 @@ public final class MainVideoPlayer extends AppCompatActivity
 
         isInMultiWindow = false;
 
-        if (playerImpl != null) playerImpl.terminate();
+        if (playerImpl == null) return;
+        if (PlayerHelper.isMinimizeOnExitEnabled(this)) {
+            playerImpl.onFullScreenButtonClicked();
+        } else {
+            playerImpl.destroy();
+        }
     }
 
     /*//////////////////////////////////////////////////////////////////////////
@@ -441,20 +446,6 @@ public final class MainVideoPlayer extends AppCompatActivity
             toggleOrientationButton.setOnClickListener(this);
             switchBackgroundButton.setOnClickListener(this);
             switchPopupButton.setOnClickListener(this);
-        }
-
-        public void terminate() {
-            switch (PlayerHelper.getMinimizeOnExitAction(context)) {
-                case PlayerHelper.MinimizeMode.MINIMIZE_ON_EXIT_MODE_BACKGROUND:
-                    onPlayBackgroundButtonClicked();
-                    break;
-                case PlayerHelper.MinimizeMode.MINIMIZE_ON_EXIT_MODE_POPUP:
-                    onFullScreenButtonClicked();
-                    break;
-                case PlayerHelper.MinimizeMode.MINIMIZE_ON_EXIT_MODE_NONE:
-                    destroy();
-                    break;
-            }
         }
 
         /*//////////////////////////////////////////////////////////////////////////
