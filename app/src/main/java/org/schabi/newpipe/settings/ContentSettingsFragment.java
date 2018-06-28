@@ -56,8 +56,6 @@ public class ContentSettingsFragment extends BasePreferenceFragment {
     private File databasesDir;
     private File newpipe_db;
     private File newpipe_db_journal;
-    private File newpipe_db_shm;
-    private File newpipe_db_wal;
     private File newpipe_settings;
 
     private String thumbnailLoadToggleKey;
@@ -90,9 +88,6 @@ public class ContentSettingsFragment extends BasePreferenceFragment {
         databasesDir = new File(homeDir + "/databases");
         newpipe_db = new File(homeDir + "/databases/newpipe.db");
         newpipe_db_journal = new File(homeDir + "/databases/newpipe.db-journal");
-        newpipe_db_shm = new File(homeDir + "/databases/newpipe.db-shm");
-        newpipe_db_wal = new File(homeDir + "/databases/newpipe.db-wal");
-
         newpipe_settings = new File(homeDir + "/databases/newpipe.settings");
         newpipe_settings.delete();
 
@@ -212,7 +207,7 @@ public class ContentSettingsFragment extends BasePreferenceFragment {
                     new BufferedOutputStream(
                             new FileOutputStream(path)));
             ZipHelper.addFileToZip(outZip, newpipe_db.getPath(), "newpipe.db");
-
+            ZipHelper.addFileToZip(outZip, newpipe_db_journal.getPath(), "newpipe.db-journal");
             saveSharedPreferencesToFile(newpipe_settings);
             ZipHelper.addFileToZip(outZip, newpipe_settings.getPath(), "newpipe.settings");
 
@@ -268,15 +263,8 @@ public class ContentSettingsFragment extends BasePreferenceFragment {
                 throw new Exception("Could not create databases dir");
             }
 
-            final boolean isDbFileExtracted = ZipHelper.extractFileFromZip(filePath,
-                    newpipe_db.getPath(), "newpipe.db");
-
-            if (isDbFileExtracted) {
-                newpipe_db_journal.delete();
-                newpipe_db_wal.delete();
-                newpipe_db_shm.delete();
-
-            } else {
+            if(!(ZipHelper.extractFileFromZip(filePath, newpipe_db.getPath(), "newpipe.db")
+                    && ZipHelper.extractFileFromZip(filePath, newpipe_db_journal.getPath(), "newpipe.db-journal"))) {
                 Toast.makeText(getContext(), R.string.could_not_import_all_files, Toast.LENGTH_LONG)
                         .show();
             }
