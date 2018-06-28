@@ -219,10 +219,11 @@ public final class MainVideoPlayer extends AppCompatActivity
                 getWindow().getAttributes().screenBrightness);
 
         if (playerImpl == null) return;
-        if (!isBackPressed) {
+        if (isBackPressed) {
+            playerImpl.destroy();
+        } else {
             playerImpl.minimize();
         }
-        playerImpl.destroy();
 
         isInMultiWindow = false;
         isBackPressed = false;
@@ -464,8 +465,7 @@ public final class MainVideoPlayer extends AppCompatActivity
                     onFullScreenButtonClicked();
                     break;
                 case PlayerHelper.MinimizeMode.MINIMIZE_ON_EXIT_MODE_NONE:
-                default:
-                    // No action
+                    destroy();
                     break;
             }
         }
