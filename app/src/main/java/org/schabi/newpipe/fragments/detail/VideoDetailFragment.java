@@ -485,7 +485,6 @@ public class VideoDetailFragment
         videoUploadDateView = rootView.findViewById(R.id.detail_upload_date_view);
         videoDescriptionView = rootView.findViewById(R.id.detail_description_view);
         videoDescriptionView.setMovementMethod(LinkMovementMethod.getInstance());
-        videoDescriptionView.setAutoLinkMask(Linkify.WEB_URLS);
 
         //thumbsRootLayout = rootView.findViewById(R.id.detail_thumbs_root_layout);
         thumbsUpTextView = rootView.findViewById(R.id.detail_thumbs_up_count_view);
@@ -974,10 +973,12 @@ public class VideoDetailFragment
         return sortedVideoStreams != null ? sortedVideoStreams.get(selectedVideoStreamIndex) : null;
     }
 
-    private void prepareDescription(final String descriptionHtml) {
+    private void prepareDescription(String descriptionHtml) {
         if (TextUtils.isEmpty(descriptionHtml)) {
             return;
         }
+
+        descriptionHtml = descriptionHtml.replace(" href", " href2").replace("abs:href", "href");
 
         disposables.add(Single.just(descriptionHtml)
                 .map((@io.reactivex.annotations.NonNull String description) -> {
